@@ -10,7 +10,7 @@ import sys
 
 import thread
 
-def accepted_client(conn, add):
+def accepted_client(conn, add, dic):
     print "Start"
     try:
         while True:
@@ -36,6 +36,7 @@ def server():
 
     # Listen for incoming connections
     sock.listen(1)
+    dic = {}
 
     while True:
         # Wait for a connection
@@ -45,7 +46,7 @@ def server():
         try:
             print 'connection from', client_address
 
-            thread.start_new_thread(accepted_client, (connection, client_address))
+            thread.start_new_thread(accepted_client, (connection, client_address,dic))
 
         finally:
             # Clean up the connection
