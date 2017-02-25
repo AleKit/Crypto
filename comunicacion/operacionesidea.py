@@ -10,6 +10,12 @@ def sumamodulo(a,b):
     y = x % (2**16)
     return '{0:0{1}b}'.format(y,len(a))
 
+def opuestomodulo(a):
+    abin = int(a,2)
+    x = abin % (2**16)
+    y = 2**16 - x
+    return '{0:0{1}b}'.format(y,len(a))
+
 def multimodulo(a,b):
     abin = int(a,2)
     bbin = int(b,2)
@@ -19,3 +25,15 @@ def multimodulo(a,b):
 def xor(a,b): 
     y = int(a,2) ^ int(b,2)
     return '{0:0{1}b}'.format(y,len(a))
+
+def numerogrande(n):
+    a = random.getrandbits(n)
+    print a
+    b = str(a)
+    print b
+    c = len(b)
+    d = int(b)
+    e = bin(d) #ahora hay que quitar el 0b del principio
+    print e
+    f = int(e,2)
+    return '{0:0{1}b}'.format(f,128)
