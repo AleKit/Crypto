@@ -22,6 +22,21 @@ def multimodulo(a,b):
     y = (abin*bbin) % (2**16+1)
     return '{0:0{1}b}'.format(y,len(a))
 
+def egcd(a, b):
+    if a == 0:
+        return (b, 0, 1)
+    else:
+        g, x, y = egcd(b % a, a)
+        return (g, y - (b // a) * x, x)
+    
+    # x = inversomodulo(b) mod n, (x * b) % n == 1
+def inversomodulo(b, n = 2**16):
+    g, x, _ = egcd(b, n)
+    if g == 1:
+        return x % n
+    else:
+        return "no se puede calcular"
+
 def xor(a,b): 
     y = int(a,2) ^ int(b,2)
     return '{0:0{1}b}'.format(y,len(a))
