@@ -2,24 +2,26 @@
 #a = "11011111101100110110011001011101000"
 #b = "11001011101100111000011100001100001"
 
-def sumamodulo(a,b):
+import random
+   
+def sumamodulo(a,b, n= 2**16):
     abin = int(a,2)
     bbin = int(b,2)
     x = (abin+bbin)
-    print '{0:0{1}b}'.format(x,len(a))
-    y = x % (2**16)
+    #print '{0:0{1}b}'.format(x,len(a))
+    y = x % n
     return '{0:0{1}b}'.format(y,len(a))
 
-def opuestomodulo(a):
+def opuestomodulo(a, n = 2**16):
     abin = int(a,2)
-    x = abin % (2**16)
-    y = 2**16 - x
+    x = abin % n
+    y = n - x
     return '{0:0{1}b}'.format(y,len(a))
 
-def multimodulo(a,b):
+def multimodulo(a,b, n = 2**16):
     abin = int(a,2)
     bbin = int(b,2)
-    y = (abin*bbin) % (2**16+1)
+    y = (abin*bbin) % (n+1)
     return '{0:0{1}b}'.format(y,len(a))
 
 def egcd(a, b):
@@ -29,7 +31,7 @@ def egcd(a, b):
         g, x, y = egcd(b % a, a)
         return (g, y - (b // a) * x, x)
     
-    # x = inversomodulo(b) mod n, (x * b) % n == 1
+    # x = mulinv(b) mod n, (x * b) % n == 1
 def inversomodulo(b, n = 2**16):
     g, x, _ = egcd(b, n)
     if g == 1:
@@ -40,6 +42,7 @@ def inversomodulo(b, n = 2**16):
 def xor(a,b): 
     y = int(a,2) ^ int(b,2)
     return '{0:0{1}b}'.format(y,len(a))
+    
 
 def numerogrande(n):
     a = random.getrandbits(n)
@@ -48,7 +51,7 @@ def numerogrande(n):
     print b
     c = len(b)
     d = int(b)
-    e = bin(d) #ahora hay que quitar el 0b del principio
+    e = bin(d) 
     print e
     f = int(e,2)
     return '{0:0{1}b}'.format(f,128)
