@@ -14,7 +14,7 @@ def generadorclave(clave):
     return z
 
 
-def ideaalg(texto):
+def ideaalg(clave,texto):
     z = generadorclave(clave)
     #print z
     x1 = texto[:16]
