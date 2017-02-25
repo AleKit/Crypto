@@ -33,9 +33,9 @@ def egcd(a, b):
     
     # x = mulinv(b) mod n, (x * b) % n == 1
 def inversomodulo(b, n = 2**16):
-    g, x, _ = egcd(b, n)
+    g, x, _ = egcd(b, n+1)
     if g == 1:
-        return x % n
+        return x % (n+1)
     else:
         return "no se puede calcular"
 
