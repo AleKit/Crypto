@@ -2,6 +2,15 @@
 #a = "11011111101100110110011001011101000"
 #b = "11001011101100111000011100001100001"
 
+   
+""" 
+c = '101'
+'{0:0{1}b}'.format(int(c),0)
+Out[27]: '1100101'
+
+'{0:0{1}b}'.format(int(c,2),0)
+Out[28]: '101' """
+
 import random
 from math import sqrt
    
@@ -22,9 +31,15 @@ def opuestomodulo(a, n = 2**16):
 def multimodulo(a,b, n = 2**16):
     abin = int(a,2)
     bbin = int(b,2)
+    #caso particular a = 0 o b = 0
+    if n == 2**16 and abin == 0:
+        abin = 2**16
+    if n == 2**16 and bbin == 0:
+        bbin = 2**16
     y = (abin*bbin) % (n+1)
     return '{0:0{1}b}'.format(y,len(a))
 
+#https://en.wikibooks.org/wiki/Algorithm_Implementation/Mathematics/Extended_Euclidean_algorithm
 def egcd(a, b):
     if a == 0:
         return (b, 0, 1)
@@ -32,9 +47,13 @@ def egcd(a, b):
         g, x, y = egcd(b % a, a)
         return (g, y - (b // a) * x, x)
     
-#    x = inversomodulo(b) mod n, (x * b) % n == 1
+    # x = mulinv(b) mod n, (x * b) % n == 1
+    #en el caso particular la longitud es 17 en vez de 16
 def inversomodulo(a, n = 2**16):
     b = int(a,2)
+    #caso particular a = 0
+    if n == 2**16 and b == 0:
+        b = 2**16
     g, x, _ = egcd(b, n+1)
     if g == 1:
         return '{0:0{1}b}'.format(x % (n+1),len(a))
@@ -56,7 +75,7 @@ def numerogrande(n):
     e = bin(d) 
     print e
     f = int(e,2)
-    return '{0:0{1}b}'.format(f,128)
+    return '{0:0{1}b}'.format(f,n)
 
 #http://stackoverflow.com/questions/17298130/working-with-large-primes-in-python
 
