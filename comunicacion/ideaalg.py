@@ -72,11 +72,11 @@ def ideaalg(clave,texto,encriptar = 1):
         x1 = g11
         x4 = g14
         if i < 7:
-            x2 = g13
-            x3 = g12
-        elif i == 7:
             x2 = g12
-            x3 = g13        
+            x3 = g13
+        elif i == 7:
+            x2 = g13
+            x3 = g12        
         
     g1 = multimodulo(x1,z[j])
     j += 1
