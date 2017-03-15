@@ -132,6 +132,7 @@ def changingsubkeys(clave, sbox0,sbox1,sbox2,sbox3, parray): #[sbox0,sbox1,sbox2
     plaintext = '0000000000000000000000000000000000000000000000000000000000000000'
     sboxes = [sbox0,sbox1,sbox2,sbox3]
     parraynew = subkeygeneration(clave,parray)
+    print parraynew
     for i in mrange(0, 1042, 2): #256*4+18)/2 = 521
         #print i
         keys = blowfishalg(plaintext,sboxes,parraynew)
@@ -150,7 +151,7 @@ def changingsubkeys(clave, sbox0,sbox1,sbox2,sbox3, parray): #[sbox0,sbox1,sbox2
         else:
             sboxes[3][i-786] = int(keys[0],2)
             sboxes[3][i-785] = int(keys[1],2)
-        print plaintext
+        #print plaintext
         plaintext = keys[0] + keys[1]
     return(parraynew,sboxes)
     
