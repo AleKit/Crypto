@@ -59,15 +59,9 @@ def des_assignment(bits):
         bit6 = bits[j+5]
         selector = int(bits[j+1:j+5],2)
         aux = sboxes[i][int(bit1+bit6,2)][selector]
-        #print aux
-        result += '{0:0{1}b}'.format(aux,4) #creo que es el orden bueno
-        #print result
+        result += '{0:0{1}b}'.format(aux,4) 
         j += 6
     return result
-
-#creo que estoy haciendo la suma de strings de forma inversa
-# a como viene en la pagina, pero no me queda claro
-#solucion: transposed = plaintext[j] + transposed
 
 def des_transpose(plaintext): #64 bits
     j = 57
@@ -85,7 +79,6 @@ def des_transpose(plaintext): #64 bits
     return transposed
         
 def des_ffunction(righthalf):
-    #righthalf = plaintext[32:]   #input plaintext
     expandedright = ''
     j = 0
     k = 0
@@ -97,9 +90,8 @@ def des_ffunction(righthalf):
         elif j == 47:
             expandedright += righthalf[0]
         j += 1
-        if j % 6 == 0: #estaria bien revisar si esto se hace cuando debe
+        if j % 6 == 0: 
             k += 2
-            #print j
     return expandedright
 
 def des_parity(originalclave): #clave de 56 bits
@@ -108,16 +100,15 @@ def des_parity(originalclave): #clave de 56 bits
                     originalclave[28:35] + '0' + originalclave[35:42] + 
                     '0' + originalclave[42:49] + '0' + 
                                 originalclave[49:56] + '0')
-#en realidad da igual lo que valgan los bits de paridad porque no se usan
+#FALTA APLICAR LA REGLA DE PARIDAD AUNQUE NO ES NECESARIA PARA QUE EL ALGORITMO FUNCIONE
 
-def des_subkeys(clave): #clave de 64 bits pero hay 8 de paridad??
+def des_subkeys(clave): #clave de 64 bits
     j = 56
     lefthalf = ''
     righthalf = ''    
     subkeys = []
     subkeystransp = []
     while True:
-        #print j
         lefthalf += clave[j]
         if j == 35:
             break
@@ -127,7 +118,6 @@ def des_subkeys(clave): #clave de 64 bits pero hay 8 de paridad??
             j -= 8
     j = 62
     while True:
-        #print j
         righthalf += clave[j]
         if j == 3:
             break
@@ -135,7 +125,6 @@ def des_subkeys(clave): #clave de 64 bits pero hay 8 de paridad??
             j += 55
         else:
             j -= 8
-    #return lefthalf + righthalf
     for i in xrange(16):
         if i < 2 or i == 8 or i == 15:
             lefthalf = lefthalf[1:] + lefthalf[:1]
@@ -160,7 +149,7 @@ def des_subkeys(clave): #clave de 64 bits pero hay 8 de paridad??
                              subkeys[i][55]+subkeys[i][33]+subkeys[i][52]+
                              subkeys[i][45]+subkeys[i][41]+subkeys[i][49]+
                              subkeys[i][35]+subkeys[i][28]+subkeys[i][31])
-    return subkeystransp  #probablemente invertir
+    return subkeystransp 
     
 
 def des_alg(plaintext,key):
@@ -186,7 +175,6 @@ def des_alg(plaintext,key):
             righthalf = step5
         if i == 15:
             lefthalf = step5
-            #righthalf = step4
     finalstep = lefthalf + righthalf
     
     encrypt = (finalstep[39] + finalstep[7] + finalstep[47] + finalstep[15] + 
