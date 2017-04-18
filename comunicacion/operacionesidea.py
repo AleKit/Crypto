@@ -49,7 +49,7 @@ def egcd(a, b):
     
     # x = mulinv(b) mod n, (x * b) % n == 1
     #en el caso particular la longitud es 17 en vez de 16
-def inversomodulo(a, n = 2**16):
+def inversomoduloold(a, n = 2**16): #con AES no funciona bien
     b = int(a,2)
     #caso particular a = 0
     if n == 2**16 and b == 0:
@@ -59,6 +59,20 @@ def inversomodulo(a, n = 2**16):
         return '{0:0{1}b}'.format(x % (n+1),len(a))
     else:
         return "no se puede calcular"
+   
+def inversomodulo(a, n = 2**16): #AES
+    b = int(a,2)
+    #caso particular a = 0
+    #if n == 2**16 and b == 0:
+    if b == 0:
+        return '{0:0{1}b}'.format(0 ,len(a))
+    else:
+        g, x, _ = egcd(b, n+1)
+        #print g
+        if g == 1:
+            return '{0:0{1}b}'.format(x % (n+1),len(a))
+        else:
+            return "no se puede calcular"
 
 def xor(a,b): 
     y = int(a,2) ^ int(b,2)
