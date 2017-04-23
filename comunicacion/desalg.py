@@ -95,12 +95,18 @@ def des_ffunction(righthalf):
     return expandedright
 
 def des_parity(originalclave): #clave de 56 bits
-    return ''.join(originalclave[:7] + '0' + originalclave[7:14] + '0' +
-                   originalclave[14:21] + '0' + originalclave[21:28] + '0' + 
-                    originalclave[28:35] + '0' + originalclave[35:42] + 
-                    '0' + originalclave[42:49] + '0' + 
-                                originalclave[49:56] + '0')
-#FALTA APLICAR LA REGLA DE PARIDAD AUNQUE NO ES NECESARIA PARA QUE EL ALGORITMO FUNCIONE
+    parities = ''
+    for j in mrange(0,len(originalclave),7):
+        if originalclave[j:j+8].count('0') % 2 == 0:
+            parities += '0'
+        else:
+            parities += '1'            
+    return ''.join(originalclave[:7] + parities[0] + originalclave[7:14] + 
+            parities[1] + originalclave[14:21] + parities[2] + 
+            originalclave[21:28] + parities[3] + originalclave[28:35] +
+            parities[4] + originalclave[35:42] + parities[5] +
+            originalclave[42:49] + parities[6] + 
+            originalclave[49:56] + parities[7])
 
 def des_subkeys(clave): #clave de 64 bits
     j = 56
