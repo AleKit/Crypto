@@ -97,10 +97,10 @@ def des_ffunction(righthalf):
 def des_parity(originalclave): #clave de 56 bits
     parities = ''
     for j in mrange(0,len(originalclave),7):
-        if originalclave[j:j+8].count('0') % 2 == 0:
-            parities += '0'
+        if originalclave[j:j+8].count('1') % 2 == 0:
+            parities += '1'
         else:
-            parities += '1'            
+            parities += '0'            
     return ''.join(originalclave[:7] + parities[0] + originalclave[7:14] + 
             parities[1] + originalclave[14:21] + parities[2] + 
             originalclave[21:28] + parities[3] + originalclave[28:35] +
