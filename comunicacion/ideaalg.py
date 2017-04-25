@@ -33,14 +33,16 @@ def generadordecr(z):
         w.append(opuestomodulo(z[j+2]))
         w.append(opuestomodulo(z[j+1]))
         w.append(inversomodulo(z[j+3]))
-        
+    aux1 = w[-2]
+    aux2 = w[-3]
+    w[-2] = aux2
+    w[-3] = aux1
     return w
 
 def ideaalg(clave,texto,encriptar = 1):
     z = generadorclave(clave)
     if encriptar == 0:
         z = generadordecr(z)
-    print z
     x1 = texto[:16]
     x2 = texto[16:32]
     x3 = texto[32:48]
@@ -87,3 +89,10 @@ def ideaalg(clave,texto,encriptar = 1):
     g4 = multimodulo(x4,z[j])
     print j
     return g1 + g2 + g3 + g4
+
+clave = '00110001001100100011001100110100001101010011011000110111001110000011100100110000001100010011001000110011001101000011010100110110'
+msg = '0110111101110010011010010110011101101110011011010111001101100111'
+res = ideaalg(clave, msg)
+expected = '0100001111011010000010010100111111000110001101111001110100010110'
+desenc = ideaalg(clave, ideaalg(clave, msg), 0)
+
