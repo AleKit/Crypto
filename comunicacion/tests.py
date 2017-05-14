@@ -4,7 +4,7 @@ def test_des(number):
     for i in xrange(number):
         key = numerogrande(56)
         plaintext = numerogrande(64)
-        cifcif = des_alg(des_alg(plaintext,key),key)
+        cifcif = des_alg(des_alg(plaintext,key),key,0)
         if cifcif != plaintext:
             print ("Test fallido")
             print ("clave:")
