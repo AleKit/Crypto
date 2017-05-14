@@ -2,12 +2,11 @@
 """
 Created on Sun Mar 12 12:55:31 2017
 
-@author: ajand
 """
 
 ###sboxes
 
-sbox1 = [[4,4,13,1,2,15,11,8,3,10,6,12,5,9,0,7],
+sbox1 = [[14,4,13,1,2,15,11,8,3,10,6,12,5,9,0,7],
          [0,15,7,4,14,2,13,1,10,6,12,11,9,5,3,8],
          [4,1,14,8,13,6,2,11,15,12,9,7,3,10,5,0],
          [15,12,8,2,4,9,1,7,5,11,3,14,10,0,6,13]]
@@ -59,9 +58,10 @@ def des_assignment(bits):
         bit6 = bits[j+5]
         selector = int(bits[j+1:j+5],2)
         aux = sboxes[i][int(bit1+bit6,2)][selector]
-        result += '{0:0{1}b}'.format(aux,4) 
+        result += '{0:0{1}b}'.format(aux,4) #creo que es el orden bueno
         j += 6
     return result
+
 
 def des_transpose(plaintext): #64 bits
     j = 57
@@ -90,7 +90,7 @@ def des_ffunction(righthalf):
         elif j == 47:
             expandedright += righthalf[0]
         j += 1
-        if j % 6 == 0: 
+        if j % 6 == 0:
             k += 2
     return expandedright
 
@@ -108,7 +108,7 @@ def des_parity(originalclave): #clave de 56 bits
             originalclave[42:49] + parities[6] + 
             originalclave[49:56] + parities[7])
 
-def des_subkeys(clave): #clave de 64 bits
+def des_subkeys(clave,encriptar=1): #clave de 64 bits
     j = 56
     lefthalf = ''
     righthalf = ''    
@@ -155,18 +155,20 @@ def des_subkeys(clave): #clave de 64 bits
                              subkeys[i][55]+subkeys[i][33]+subkeys[i][52]+
                              subkeys[i][45]+subkeys[i][41]+subkeys[i][49]+
                              subkeys[i][35]+subkeys[i][28]+subkeys[i][31])
-    return subkeystransp 
+    if encriptar != 1:
+        subkeystransp = subkeystransp[::-1]
+    return subkeystransp  
     
 
-def des_alg(plaintext,key):
-    subkeys = des_subkeys(des_parity(key))
+def des_alg(plaintext,key,encriptar=1):
+    subkeys = des_subkeys(des_parity(key),encriptar)
     step1 = des_transpose(plaintext)
     lefthalf = step1[:32]
     righthalf = step1[32:]
     for i in xrange(16):
         step2 = des_ffunction(righthalf)
         step25 = xor(step2,subkeys[i])
-        step3 = des_assignment(step2)
+        step3 = des_assignment(step25)
         step4 = (step3[15] + step3[6] + step3[19] + step3[20] + 
                 step3[28] + step3[11] + step3[27] + step3[16] + 
                 step3[0] + step3[14] + step3[22] + step3[25] + 
@@ -181,6 +183,7 @@ def des_alg(plaintext,key):
             righthalf = step5
         if i == 15:
             lefthalf = step5
+            #righthalf = step4
     finalstep = lefthalf + righthalf
     
     encrypt = (finalstep[39] + finalstep[7] + finalstep[47] + finalstep[15] + 
