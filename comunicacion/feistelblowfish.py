@@ -6,6 +6,8 @@ Created on Sun Mar  5 12:44:19 2017
 @author: ale
 """
 
+import copy
+
 #def boxorarray(k): #sbox k = 256 ; parray k = 18
 #    box = []
 #    for i in xrange(k):
@@ -58,14 +60,15 @@ def ffunction(numero,sboxes): #input: 32 bits
     num1 = int(numero[:8],2)
     num2 = int(numero[8:16],2)
     num3 = int(numero[16:24],2)
-    num4 = int(numero[24:32],2)
+    num4 = int(numero[24:],2)
 
     s1 = bin(sboxes[0][num1])[2:]
     s2 = bin(sboxes[1][num1])[2:]
     #s3 = sboxes[2][num1]
     s3 = bin(sboxes[2][num1])[2:]
     s4 = bin(sboxes[3][num1])[2:]
-    value = xor(sumamodulo(s1,s2,2**32),sumamodulo(s3,s4,2**32))
+#    value = xor(sumamodulo(s1,s2,2**32),sumamodulo(s3,s4,2**32))
+    value = sumamodulo(xor(sumamodulo(s1,s2,2**32), s3), s4, 2**32)
     return value
 
 #uso: ffunction(numerogrande(32))
@@ -120,14 +123,14 @@ def blowfishalg(plaintext, sboxes = [], parray = None, encriptar = 1):
         if i < 15:
             textleft = a3
             textright = a1
-        if i == 15:
+        elif i == 15:
             textleft = a1
             textright = a3
-    #print i
     b17 = xor(textright,parray[i+1])
     b18 = xor(textleft,parray[i+2])
     return (b18,b17)
 
+"""
 def changingsubkeys(clave, sbox0,sbox1,sbox2,sbox3, parray): #[sbox0,sbox1,sbox2,sbox3]
     plaintext = '0000000000000000000000000000000000000000000000000000000000000000'
     sboxes = [sbox0,sbox1,sbox2,sbox3]
@@ -154,6 +157,30 @@ def changingsubkeys(clave, sbox0,sbox1,sbox2,sbox3, parray): #[sbox0,sbox1,sbox2
         #print plaintext
         plaintext = keys[0] + keys[1]
     return(parraynew,sboxes)
+"""
+
+clave = '01010101010101010101010101010101'
+plaintext = '0000000000000000000000000000000000000000000000000000000000000000'
+sboxes = [sbox0,sbox1,sbox2,sbox3]
+parraynew = subkeygeneration(clave,parray)
+
+keys = blowfishalg(plaintext,sboxes,parraynew)
+
+print keys
+
+result = blowfishalg(keys[0] + keys[1],sboxes,parraynew,0)
+
+print result
+
+parraynew[0] = copy.deepcopy(keys[0])
+
+parraynew[1] = copy.deepcopy(keys[1])
+
+plaintext = copy.deepcopy(keys[0]) + copy.deepcopy(keys[1])
+
+keys = blowfishalg(plaintext,sboxes,parraynew, 0)
+
+print keys
     
     #por que se modifica sbox0 ??
 
