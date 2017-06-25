@@ -57,3 +57,25 @@ def test_idea(number):
             break
     if k == 1:
         print ("Test exitoso")
+
+#Test del algoritmo Blowfish. Input: número de intentos        
+def test_bf(number):
+    k = 1
+    for i in xrange(number):
+        key = numerogrande(32)
+        plaintext = numerogrande(64)
+        (pnew, sb) = changingsubkeys(key, sbox0,sbox1,sbox2,sbox3, parray)
+        (b, c) = blowfishalg(plaintext,sb,pnew)
+        (d, e) = blowfishalg(b + c, sb, pnew ,0)
+        if d + e != plaintext:
+            print ("Test fallido")
+            print ("clave:")
+            print key
+            print ("texto:")
+            print plaintext
+            print("xor:")
+            print xor(d+e, plaintext)
+            k = 0
+            break
+    if k == 1:
+        print ("Test exitoso")
