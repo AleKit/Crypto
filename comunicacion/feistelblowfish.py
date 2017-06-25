@@ -114,9 +114,9 @@ def blowfishalg(plaintext, sboxes = [], parray = None, encriptar = 1):
 #            sboxes.append(boxorarray(256))
     if encriptar == 0:
         parray = blowdecryption(parray)
+    textleft = plaintext[:32]
+    textright = plaintext[32:]
     for i in xrange(16):
-        textleft = plaintext[:32]
-        textright = plaintext[32:]
         a1 = xor(textleft,parray[i])
         a2 = ffunction(a1,sboxes)
         a3 = xor(a2,textright)
@@ -130,7 +130,6 @@ def blowfishalg(plaintext, sboxes = [], parray = None, encriptar = 1):
     b18 = xor(textleft,parray[i+2])
     return (b18,b17)
 
-"""
 def changingsubkeys(clave, sbox0,sbox1,sbox2,sbox3, parray): #[sbox0,sbox1,sbox2,sbox3]
     plaintext = '0000000000000000000000000000000000000000000000000000000000000000'
     sboxes = [sbox0,sbox1,sbox2,sbox3]
@@ -157,8 +156,8 @@ def changingsubkeys(clave, sbox0,sbox1,sbox2,sbox3, parray): #[sbox0,sbox1,sbox2
         #print plaintext
         plaintext = keys[0] + keys[1]
     return(parraynew,sboxes)
-"""
 
+"""
 clave = '01010101010101010101010101010101'
 plaintext = '0000000000000000000000000000000000000000000000000000000000000000'
 sboxes = [sbox0,sbox1,sbox2,sbox3]
@@ -181,7 +180,7 @@ plaintext = copy.deepcopy(keys[0]) + copy.deepcopy(keys[1])
 keys = blowfishalg(plaintext,sboxes,parraynew, 0)
 
 print keys
-    
+"""    
     #por que se modifica sbox0 ??
 
 
