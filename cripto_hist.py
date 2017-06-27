@@ -24,13 +24,15 @@ def cesar(texto):
             indx = 65
         tc = tc + chr(indx)
     return tc
-    
-def fac(n):
-    if n == 0:
-        return 0
-    else:
-        return fac(n - 1) * n
 
+#27-jun
+#def fac(n):
+#  f = 1
+#  if n == 0 or n == 1:
+#    return f
+#  else:
+#    f = fac(n-1) * n
+#    return f
     
 # 28-oct
 
