@@ -15,13 +15,13 @@ def normalizar(texto):
     return tn
             
 
-def cesar(texto):
+def cesar(texto,desplazamiento):
     tn = normalizar(texto)
     tc = ""
     for letra in tn:
-        indx = ord(letra) + 1
-        if indx == 91:
-            indx = 65
+        indx = ord(letra) + desplazamiento
+        if indx >= 91:
+            indx -= 26
         tc = tc + chr(indx)
     return tc
 
