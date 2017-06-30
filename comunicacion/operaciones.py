@@ -124,3 +124,11 @@ def encontrarprimo(n): #n es el numero de bits
 
 #'1101100011001101110011010110011001011100000010010001101001110111'
 #es primo, 64 bits, el programa lo ha sacado en unos 5-6 minutos
+
+def modular_pow(base, exponent, modulus):
+    if modulus == 1: 
+        return 0 
+    c = 1
+    for e_prime in xrange(exponent):
+        c = (c * base) % modulus
+    return c
