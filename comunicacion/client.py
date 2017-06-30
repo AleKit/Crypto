@@ -12,7 +12,11 @@ import random
 address = ('localhost', 6000)
 conn = Client(address, authkey='secret password')
 
-msg1 = conn.recv()
+dh = input("Diffie-Hellman yes or no? yes = 1, no = 0: ")
+if dh == 0:
+    msg1 = conn.recv()
+else:
+    msg1 = '0'
 
 if msg1[:3] == 'RSA':
     m_rsa = 123
@@ -34,14 +38,18 @@ if msg1[:2] == 'EG':
     
 
 p = 2**128-159
-g = 127696581778553318510832226979062695964
+#g = 127696581778553318510832226979062695964
+g = 5
 b = p
 while b > p-1:
     bstr = numerogrande(int(round(random.random()*10)+10))
     b = int(bstr,2)
 #B = g**b % p
+print "b es"
+print b
 B = modular_pow(g,b,p)
-
+print "B es"
+print B
 message = 'B' + str(B)
 
 conn.send(message)
@@ -51,9 +59,11 @@ if msg[0] == 'A':
     message2 = msg[1:]
 
 A = int(message2)
+print "A es"
 print A
 #s = A**b % p
 s = modular_pow(A,b,p)
+print "s es"
 print s
 
 cifrador = 'prueba'
