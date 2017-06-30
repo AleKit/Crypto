@@ -55,18 +55,26 @@ while True:
         break
     elif msg[0] == 'B' and a == -1:
         p = 2**128-159
-        g = 127696581778553318510832226979062695964
+        #g = 127696581778553318510832226979062695964
+        g = 5
         a = p
         while a > p-1:
             astr = numerogrande(int(round(random.random()*10)+10))
             a = int(astr,2)
+        print "a es"
+        print a
         #A = g**a % p
         A = modular_pow(g,a,p)
+        print "A es"
+        print A
         message = 'A' + str(A)
         conn.send(message)
         B = int(msg[1:])
+        print "B es"
+        print B
         #s = B**a % p
         s = modular_pow(B,a,p)
+        print "s es"
         print s
     elif B > 0 and msg[:3] == 'cif':
         descifrador = msg[3:]
