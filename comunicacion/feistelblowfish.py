@@ -6,8 +6,6 @@ Created on Sun Mar  5 12:44:19 2017
 @author: ale
 """
 
-import copy
-
 #def boxorarray(k): #sbox k = 256 ; parray k = 18
 #    box = []
 #    for i in xrange(k):
@@ -60,15 +58,16 @@ def ffunction(numero,sboxes): #input: 32 bits
     num1 = int(numero[:8],2)
     num2 = int(numero[8:16],2)
     num3 = int(numero[16:24],2)
-    num4 = int(numero[24:],2)
+    num4 = int(numero[24:32],2)
 
     s1 = bin(sboxes[0][num1])[2:]
     s2 = bin(sboxes[1][num1])[2:]
     #s3 = sboxes[2][num1]
     s3 = bin(sboxes[2][num1])[2:]
     s4 = bin(sboxes[3][num1])[2:]
-#    value = xor(sumamodulo(s1,s2,2**32),sumamodulo(s3,s4,2**32))
-    value = sumamodulo(xor(sumamodulo(s1,s2,2**32), s3), s4, 2**32)
+    value = sumamodulo(xor(sumamodulo(s1,s2,2**32),s3),s4,2**32)
+    while len(value) < 32:
+        value = '0' + value
     return value
 
 #uso: ffunction(numerogrande(32))
@@ -108,10 +107,6 @@ def blowdecryption(subkeys):
 #==============================================================================
 
 def blowfishalg(plaintext, sboxes = [], parray = None, encriptar = 1):
-#    if encriptar == 1:
-#        parray = boxorarray(18) #pi fractional??
-#        for i in xrange(4):
-#            sboxes.append(boxorarray(256))
     if encriptar == 0:
         parray = blowdecryption(parray)
     textleft = plaintext[:32]
@@ -123,7 +118,7 @@ def blowfishalg(plaintext, sboxes = [], parray = None, encriptar = 1):
         if i < 15:
             textleft = a3
             textright = a1
-        elif i == 15:
+        if i == 15:
             textleft = a1
             textright = a3
     b17 = xor(textright,parray[i+1])
@@ -134,9 +129,7 @@ def changingsubkeys(clave, sbox0,sbox1,sbox2,sbox3, parray): #[sbox0,sbox1,sbox2
     plaintext = '0000000000000000000000000000000000000000000000000000000000000000'
     sboxes = [sbox0,sbox1,sbox2,sbox3]
     parraynew = subkeygeneration(clave,parray)
-    print parraynew
     for i in mrange(0, 1042, 2): #256*4+18)/2 = 521
-        #print i
         keys = blowfishalg(plaintext,sboxes,parraynew)
         if i < 18:
             parraynew[i] = keys[0]
@@ -153,42 +146,5 @@ def changingsubkeys(clave, sbox0,sbox1,sbox2,sbox3, parray): #[sbox0,sbox1,sbox2
         else:
             sboxes[3][i-786] = int(keys[0],2)
             sboxes[3][i-785] = int(keys[1],2)
-        #print plaintext
         plaintext = keys[0] + keys[1]
     return(parraynew,sboxes)
-
-"""
-clave = '01010101010101010101010101010101'
-plaintext = '0000000000000000000000000000000000000000000000000000000000000000'
-sboxes = [sbox0,sbox1,sbox2,sbox3]
-parraynew = subkeygeneration(clave,parray)
-
-keys = blowfishalg(plaintext,sboxes,parraynew)
-
-print keys
-
-result = blowfishalg(keys[0] + keys[1],sboxes,parraynew,0)
-
-print result
-
-parraynew[0] = copy.deepcopy(keys[0])
-
-parraynew[1] = copy.deepcopy(keys[1])
-
-plaintext = copy.deepcopy(keys[0]) + copy.deepcopy(keys[1])
-
-keys = blowfishalg(plaintext,sboxes,parraynew, 0)
-
-print keys
-"""    
-    #por que se modifica sbox0 ??
-
-
-#p = numerogrande(64)        
-#a = blowfishalg(p)
-#b = blowfishalg(a[2],a[1], a[0], 0)
-
-#'0000000000000000000000000000000000000000000000000000000000000000'
-#64 zeroes
-#blowfishalg('0000000000000000000000000000000000000000000000000000000000000000',[sbox0,sbox1,sbox2,sbox3],subkeygeneration(clave,parray))
-    
