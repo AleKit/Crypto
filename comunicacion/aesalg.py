@@ -74,7 +74,7 @@ def decr_mix_columns(matrix):
     return mixmatrix
 
 def g_function(word, r, rc): #r is the round
-    gcirc = word[1:] + word[0]
+    gcirc = word[8:] + word[:8]
     bytes4 = []
     for i in mrange(0,32,8):
         bytes4.append(sub_bytes(gcirc[i:i+8]))
