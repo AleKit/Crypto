@@ -4,6 +4,7 @@ Created on Mon Nov 28 11:31:42 2016
 
 @author: usupclab-18
 """
+#intento de comunicacion con ZMQ, Diffie-Hellman
 
 #Alice
 
