@@ -6,6 +6,8 @@ Created on Mon Mar  6 11:00:08 2017
 @author: ale
 """
 
+#substitution boxes y p-array iniciales del algoritmo Blowfish con la parte fraccional de pi en hexadecimal
+
 """
    =============================================================
    The hex digits of pi, arranged as four s_boxes & one p_array,
