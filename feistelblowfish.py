@@ -6,6 +6,9 @@ Created on Sun Mar  5 12:44:19 2017
 @author: ale
 """
 
+#Algoritmo Blowfish
+#necesita boxes.py, operaciones.py
+
 #def boxorarray(k): #sbox k = 256 ; parray k = 18
 #    box = []
 #    for i in xrange(k):
@@ -36,6 +39,7 @@ Created on Sun Mar  5 12:44:19 2017
 #    value = xor(sumamodulo(s1,s2,2**32),sumamodulo(s3,s4,2**32))
 #    return value
 
+#generacion de subclaves, modifica la p-array
 def subkeygeneration(clave,parray):
     lenclave = len(clave)
     listaclave = []
@@ -52,7 +56,7 @@ def subkeygeneration(clave,parray):
         parraynueva.append(xor(bin(parray[i])[2:],listaclave[i]))
     return parraynueva
         
-
+#f-function aplicada a la mitad izquierda
 def ffunction(numero,sboxes): #input: 32 bits
 
     num1 = int(numero[:8],2)
@@ -72,6 +76,7 @@ def ffunction(numero,sboxes): #input: 32 bits
 
 #uso: ffunction(numerogrande(32))
 
+#funcion para calcular las subclaves para descifrar
 def blowdecryption(subkeys):
     j = 17
     decrsubkey = []
@@ -106,6 +111,8 @@ def blowdecryption(subkeys):
 #     return (parray,sboxes,b18+b17)
 #==============================================================================
 
+#algoritmo Blowfish, primero hay que cambiar las claves, sirve para cifrar (encriptar = 1) o descifrar (encriptar = 0)
+#texto de 64 bits
 def blowfishalg(plaintext, sboxes = [], parray = None, encriptar = 1):
     if encriptar == 0:
         parray = blowdecryption(parray)
@@ -125,6 +132,7 @@ def blowfishalg(plaintext, sboxes = [], parray = None, encriptar = 1):
     b18 = xor(textleft,parray[i+2])
     return (b18,b17)
 
+#funcion para generar las nuevas s-boxes y p-array, necesaria antes de aplicar el algoritmo
 def changingsubkeys(clave, sbox0,sbox1,sbox2,sbox3, parray): #[sbox0,sbox1,sbox2,sbox3]
     plaintext = '0000000000000000000000000000000000000000000000000000000000000000'
     sboxes = [sbox0,sbox1,sbox2,sbox3]
