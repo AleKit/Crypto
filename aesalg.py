@@ -1,7 +1,11 @@
+#Advanced Encryption Standard
+#necesita operaciones.py
+
 #de momento todo para 128 bits
 
 #para 192: las filas no cambian, pero son 6 columnas
 
+#transformacion del bloque de texto en una matriz 4x4
 def block_matrix(block):
     matrixk = [[0 for x in xrange(4)] for x in xrange(4)]
     k = 0
@@ -14,6 +18,7 @@ def block_matrix(block):
             l += 1
     return matrixk
 
+#paso SubBytes
 def sub_bytes(byte):
     invbyte = inversomodulo(byte,2**8)
     bit4rot = invbyte[4:] + invbyte[:4]
@@ -24,6 +29,7 @@ def sub_bytes(byte):
     byteout = xor(xor(xor(xor(xor(invbyte,bit4rot),bit5rot),bit6rot),bit7rot),c)
     return byteout
     
+#paso SubBytes para descifrar
 def decr_sub_bytes(byte):
     bit4rot = byte[4:] + byte[:4]
     bit5rot = byte[3:] + byte[:3]
@@ -34,6 +40,7 @@ def decr_sub_bytes(byte):
     invbyteout = inversomodulo(byteout,2**8)
     return invbyteout
 
+#paso ShiftRows
 def shift_row(matrix):
     shiftmatrix = [[0 for x in xrange(4)] for x in xrange(4)]
     shiftmatrix[0] = matrix[0]
@@ -42,6 +49,7 @@ def shift_row(matrix):
     shiftmatrix[3] = matrix[3][3:] + matrix[3][:3]
     return shiftmatrix
 
+#paso ShiftRows para descifrar
 def decr_shift_row(matrix):
     shiftmatrix = [[0 for x in xrange(4)] for x in xrange(4)]
     shiftmatrix[0] = matrix[0]
@@ -49,7 +57,8 @@ def decr_shift_row(matrix):
     shiftmatrix[2] = matrix[2][2:] + matrix[2][:2]
     shiftmatrix[3] = matrix[3][1:] + matrix[3][:1]
     return shiftmatrix
-    
+
+#paso MixColumns
 def mix_columns(matrix):
     one = '00000001'
     two = '00000010'
@@ -61,6 +70,7 @@ def mix_columns(matrix):
 
     return mixmatrix
 
+#paso MixColumns para descifrar
 def decr_mix_columns(matrix):
     nine = '00001001'
     hexB = '00001011'
@@ -73,6 +83,7 @@ def decr_mix_columns(matrix):
 
     return mixmatrix
 
+#g-function: multiplicar rc por 2 y luego xor
 def g_function(word, r, rc): #r is the round
     gcirc = word[8:] + word[:8]
     bytes4 = []
@@ -88,6 +99,7 @@ def g_function(word, r, rc): #r is the round
         newword += bytes4[j]
     return newword, rc
 
+#funcion para generar las subclaves
 def key_expansion(key, r, rc): #en realidad la ronda 0 sobra
     oldwords = []
     newwords = []
@@ -107,6 +119,7 @@ def key_expansion(key, r, rc): #en realidad la ronda 0 sobra
             newkey += newwords[j]
     return newkey, rc
 
+#funcion para generar las subclaves para descifrar
 def decr_key_expansion(key, r, rc): #en realidad la ronda 0 sobra
     oldwords = []
     newwords = []
@@ -127,7 +140,7 @@ def decr_key_expansion(key, r, rc): #en realidad la ronda 0 sobra
             newkey += newwords[j]
     return newkey, rc
 
-
+#funcion para obtener las subclaves en funcion de si se cifra (encr = 1) o descifra (encr = 0)
 def aes_keys(key, encr = 1):
     rc = 0
     allkeys = []
@@ -139,6 +152,7 @@ def aes_keys(key, encr = 1):
         allkeys.append(key)
     return allkeys
 
+#algoritmo AES para cifrar
 def aes_encr(plaintext, key):
     xorplain = xor(plaintext,key)
     allkeys = aes_keys(key)
@@ -168,7 +182,7 @@ def aes_encr(plaintext, key):
         xorplain = step4
     return plaintext
         
-
+#algoritmo AES para descifrar
 def aes_decr(plaintext, key):
     xorplain = xor(plaintext,key)
     allkeys = aes_keys(key,0) 
