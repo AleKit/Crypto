@@ -3,6 +3,10 @@
 Created on Wed Oct 26 15:59:43 2016
 """
 
+#son algunas de las funciones utilizadas en cripto_hist.py con ligeros cambios para facilitar
+#su uso en los programas client.py y server.py
+
+#convierte el texto en mayusculas
 def normalizar(texto):
     tn = ""
     for letra in texto:
@@ -16,7 +20,7 @@ def normalizar(texto):
 
     
 # 28-oct
-
+#cifrado Vigenere
 def vigenere(text,cifrador):
     tn = normalizar(text)
     cifrador = normalizar(cifrador)
@@ -31,7 +35,7 @@ def vigenere(text,cifrador):
         tv += chr(index)
     return tv
     
-
+#descifrado Vigenere
 def decr_vigenere(text,descifrador):
     tn = normalizar(text)
     descifrador = normalizar(descifrador)
