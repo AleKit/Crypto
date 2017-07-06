@@ -4,6 +4,8 @@ Created on Sun Mar 12 12:55:31 2017
 
 """
 
+#Algoritmo Data Encryption Standard
+
 ###sboxes
 
 sbox1 = [[14,4,13,1,2,15,11,8,3,10,6,12,5,9,0,7],
@@ -50,6 +52,7 @@ sboxes = [sbox1, sbox2, sbox3, sbox4, sbox5, sbox6, sbox7, sbox8]
 
 ###/sboxes
 
+#funcion para asignar un numero de una s-box a un conjunto de 6 bits
 def des_assignment(bits):
     j = 0
     result = ''
@@ -58,11 +61,11 @@ def des_assignment(bits):
         bit6 = bits[j+5]
         selector = int(bits[j+1:j+5],2)
         aux = sboxes[i][int(bit1+bit6,2)][selector]
-        result += '{0:0{1}b}'.format(aux,4) #creo que es el orden bueno
+        result += '{0:0{1}b}'.format(aux,4) 
         j += 6
     return result
 
-
+#funcion para permutar los bits
 def des_transpose(plaintext): #64 bits
     j = 57
     transposed = ''
@@ -78,6 +81,7 @@ def des_transpose(plaintext): #64 bits
             j -= 8
     return transposed
         
+#f-function aplicada a la mitad derecha del texto
 def des_ffunction(righthalf):
     expandedright = ''
     j = 0
@@ -94,6 +98,7 @@ def des_ffunction(righthalf):
             k += 2
     return expandedright
 
+#funcion para añadir los bits de paridad a la clave original
 def des_parity(originalclave): #clave de 56 bits
     parities = ''
     for j in mrange(0,len(originalclave),7):
@@ -108,6 +113,7 @@ def des_parity(originalclave): #clave de 56 bits
             originalclave[42:49] + parities[6] + 
             originalclave[49:56] + parities[7])
 
+#funcion para generar las subclaves a partir de la clave original; para descifrar cambiar el valor de encriptar
 def des_subkeys(clave,encriptar=1): #clave de 64 bits
     j = 56
     lefthalf = ''
@@ -159,7 +165,7 @@ def des_subkeys(clave,encriptar=1): #clave de 64 bits
         subkeystransp = subkeystransp[::-1]
     return subkeystransp  
     
-
+#funcion que aplica el algoritmo completo, para descifrar cambiar el valor de encriptar
 def des_alg(plaintext,key,encriptar=1):
     subkeys = des_subkeys(des_parity(key),encriptar)
     step1 = des_transpose(plaintext)
@@ -169,6 +175,7 @@ def des_alg(plaintext,key,encriptar=1):
         step2 = des_ffunction(righthalf)
         step25 = xor(step2,subkeys[i])
         step3 = des_assignment(step25)
+         #permutacion
         step4 = (step3[15] + step3[6] + step3[19] + step3[20] + 
                 step3[28] + step3[11] + step3[27] + step3[16] + 
                 step3[0] + step3[14] + step3[22] + step3[25] + 
@@ -185,7 +192,7 @@ def des_alg(plaintext,key,encriptar=1):
             lefthalf = step5
             #righthalf = step4
     finalstep = lefthalf + righthalf
-    
+     #permutacion
     encrypt = (finalstep[39] + finalstep[7] + finalstep[47] + finalstep[15] + 
              finalstep[55] + finalstep[23] + finalstep[63] + finalstep[31] + 
             finalstep[38] + finalstep[6] + finalstep[46] + finalstep[14] + 
