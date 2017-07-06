@@ -13,7 +13,8 @@ Out[28]: '101' """
 
 import random
 from math import sqrt
-   
+
+#funcion para sumar dos numeros binarios a+b (cadenas de caracteres) modulo el numero n que se elija
 def sumamodulo(a,b, n= 2**16):
     abin = int(a,2)
     bbin = int(b,2)
@@ -22,12 +23,14 @@ def sumamodulo(a,b, n= 2**16):
     y = x % n
     return '{0:0{1}b}'.format(y,len(a))
 
+#funcion para encontrar el opuesto b de unnumero binario a (cadena de caracteres) modulo el numero n que se elija: (a + b) mod n = 0 mod n
 def opuestomodulo(a, n = 2**16):
     abin = int(a,2)
     x = abin % n
     y = n - x
     return '{0:0{1}b}'.format(y,len(a))
 
+#funcion para multiplicar dos numeros binarios a*b (cadenas de caracteres) modulo el numero n que se elija
 def multimodulo(a,b, n = 2**16):
     abin = int(a,2)
     bbin = int(b,2)
@@ -40,6 +43,7 @@ def multimodulo(a,b, n = 2**16):
     return '{0:0{1}b}'.format(y,len(a))
 
 #https://en.wikibooks.org/wiki/Algorithm_Implementation/Mathematics/Extended_Euclidean_algorithm
+#funcion para encontrar el maximo comun divisor de dos numeros a, b
 def egcd(a, b):
     if a == 0:
         return (b, 0, 1)
@@ -49,17 +53,19 @@ def egcd(a, b):
     
     # x = mulinv(b) mod n, (x * b) % n == 1
     #en el caso particular la longitud es 17 en vez de 16
-def inversomoduloold(a, n = 2**16): #con AES no funciona bien
-    b = int(a,2)
+ 
+#def inversomoduloold(a, n = 2**16): #con AES no funciona bien
+#    b = int(a,2)
     #caso particular a = 0
-    if n == 2**16 and b == 0:
-        b = 2**16
-    g, x, _ = egcd(b, n+1)
-    if g == 1:
-        return '{0:0{1}b}'.format(x % (n+1),len(a))
-    else:
-        return "no se puede calcular"
-   
+#    if n == 2**16 and b == 0:
+#        b = 2**16
+#    g, x, _ = egcd(b, n+1)
+#    if g == 1:
+#        return '{0:0{1}b}'.format(x % (n+1),len(a))
+#    else:
+#        return "no se puede calcular"
+
+#funcion para calcular el inverso de un numero binario a (cadena de caracteres) modulo el numero n que se elija cuando sea posible
 def inversomodulo(a, n = 2**16): #AES
     b = int(a,2)
     #caso particular a = 0
@@ -74,11 +80,12 @@ def inversomodulo(a, n = 2**16): #AES
         else:
             return "no se puede calcular"
 
+#funcion para realizar or exclusivo de dos numeros binarios a xor b (cadenas de caracteres)          
 def xor(a,b): 
     y = int(a,2) ^ int(b,2)
     return '{0:0{1}b}'.format(y,len(a))
     
-
+#funcion para generar una cadena de caracteres de un numero binario con la longitud n que se elija
 def numerogrande(n):
     a = random.getrandbits(n)
     #print a
@@ -97,6 +104,7 @@ def numerogrande(n):
 # OverflowError: Python int too large to convert to C long
 # to get over this:
 
+#funcion para iterar desde start hasta stop con el paso step
 def mrange(start, stop, step):
     while start < stop:
         yield start
@@ -104,6 +112,7 @@ def mrange(start, stop, step):
 
 # benchmarked on an old single-core system with 2GB RAM.
 
+#funcion para comprobar si un numero es primo
 def is_prime(num):
     if num == 2:
         return True
@@ -115,6 +124,7 @@ def is_prime(num):
 # 10000 calls, 53191 per second.
 # 60006 function calls in 0.190 seconds.
 
+#funcion para encontrar un primo con el numero de bits n que se elija
 def encontrarprimo(n): #n es el numero de bits
     booleano = False
     while booleano == False:
@@ -125,6 +135,7 @@ def encontrarprimo(n): #n es el numero de bits
 #'1101100011001101110011010110011001011100000010010001101001110111'
 #es primo, 64 bits, el programa lo ha sacado en unos 5-6 minutos
 
+#funcion para calcular base^exponent mod modulus
 def modular_pow(base, exponent, modulus):
     if modulus == 1: 
         return 0 
